@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oops! Có lỗi xảy ra ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30px); }
+            60% { transform: translateY(-15px); }
+        }
+        .heartbeat {
+            animation: heartbeat 2s infinite;
+        }
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 heartbeat">
+                <i class="fas fa-heart-broken text-red-400 mr-2"></i>
+                Oops!
+                <i class="fas fa-heart-broken text-red-400 ml-2"></i>
+            </h1>
+            <p class="text-lg md:text-xl opacity-90">Có lỗi xảy ra rồi</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-4xl mx-auto">
+            <!-- Error Message -->
+            <div class="text-center mb-8">
+                <div class="glass-effect rounded-3xl p-8 max-w-2xl mx-auto">
+                    <div class="text-8xl md:text-9xl font-bold text-red-300 mb-6 bounce">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4">
+                        <i class="fas fa-sad-tear text-yellow-400 mr-2"></i>
+                        Trang này không tồn tại
+                    </h2>
+                    
+                    <p class="text-lg md:text-xl opacity-90 mb-6">
+                        Có vẻ như trang bạn đang tìm kiếm đã biến mất vào không gian tình yêu
+                    </p>
+                    
+                    <div class="flex justify-center items-center space-x-4 text-sm md:text-base opacity-80 mb-6">
+                        <div class="text-center">
+                            <div class="text-2xl md:text-3xl font-bold text-yellow-300">404</div>
+                            <div>Lỗi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="text-center mb-8">
+                <div class="glass-effect rounded-2xl p-6 max-w-lg mx-auto">
+                    <p class="text-lg md:text-xl mb-4">
+                        Nhưng đừng lo lắng! Tình yêu vẫn còn đó
+                    </p>
+                    <a 
+                        href="index.html" 
+                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold rounded-full hover:from-pink-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                        tabindex="0"
+                        aria-label="Quay về trang chủ"
+                    >
+                        <i class="fas fa-home mr-2"></i>
+                        Quay về trang chủ
+                    </a>
+                </div>
+            </div>
+
+            <!-- Love Message -->
+            <div class="text-center">
+                <div class="glass-effect rounded-2xl p-6 max-w-lg mx-auto">
+                    <p class="text-lg md:text-xl italic">
+                        "Ngay cả khi có lỗi xảy ra, tình yêu của chúng ta vẫn luôn hoàn hảo."
+                    </p>
+                    <div class="flex justify-center mt-4 space-x-2">
+                        <i class="fas fa-heart text-red-400 text-xl float"></i>
+                        <i class="fas fa-heart text-pink-400 text-xl float" style="animation-delay: 0.5s;"></i>
+                        <i class="fas fa-heart text-red-400 text-xl float" style="animation-delay: 1s;"></i>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 opacity-70">
+            <p class="text-sm">
+                Được tạo với <i class="fas fa-heart text-red-400"></i> cho câu chuyện tình yêu của chúng ta
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const handleKeyDown = (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                window.location.href = 'index.html';
+            }
+        };
+
+        // Add keyboard navigation
+        document.addEventListener('DOMContentLoaded', () => {
+            const homeButton = document.querySelector('a[href="index.html"]');
+            if (homeButton) {
+                homeButton.addEventListener('keydown', handleKeyDown);
+            }
+        });
+    </script>
+</body>
+</html>
