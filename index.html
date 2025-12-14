@@ -118,6 +118,15 @@
             animation-play-state: running;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Page Transition */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
     </style>
 </head>
 <body class="text-white min-h-screen">
@@ -136,7 +145,28 @@
         </audio>
     </div>
 
-    <div class="container mx-auto px-4 py-8 relative z-10">
+    <!-- Login Screen -->
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="glass-card p-8 rounded-3xl max-w-md w-full text-center shadow-2xl transform transition-all hover:scale-105 duration-300">
+            <div class="mb-6">
+                <i class="fas fa-heart text-5xl text-pink-500 animate-pulse"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-pink-600 mb-2 script-font">Welcome, my Love</h2>
+            <p class="text-gray-700 mb-6">Please enter our special date to verify it's you ❤️</p>
+            
+            <div class="relative">
+                <input type="text" id="credential-input" placeholder="DD-MM-YYYY" maxlength="10"
+                    class="w-full bg-white/50 border-2 border-pink-200 rounded-xl px-4 py-3 text-center text-2xl tracking-widest text-pink-600 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-200 placeholder-pink-300 transition-all font-mono" />
+                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-pink-400 pointer-events-none">
+                    <i class="fas fa-key"></i>
+                </div>
+            </div>
+            <p id="error-msg" class="text-red-500 text-sm mt-3 h-5 opacity-0 transition-opacity duration-300">Incorrect date, please try again</p>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden Initially) -->
+    <div id="main-content" class="container mx-auto px-4 py-8 relative z-10 hidden">
         
         <!-- Header -->
         <header class="text-center mb-12 mt-8">
@@ -431,6 +461,85 @@
             }
             isPlaying = !isPlaying;
         });
+
+        // --- Login / Credential Logic ---
+        const credentialInput = document.getElementById('credential-input');
+        const loginScreen = document.getElementById('login-screen');
+        const mainContent = document.getElementById('main-content');
+        const errorMsg = document.getElementById('error-msg');
+        const correctCredential = "29-06-2025";
+
+        credentialInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+            
+            // Auto-format: DD-MM-YYYY
+            if (value.length > 8) value = value.slice(0, 8); // Limit to 8 digits
+            
+            if (value.length > 4) {
+                value = value.slice(0, 2) + '-' + value.slice(2, 4) + '-' + value.slice(4);
+            } else if (value.length > 2) {
+                value = value.slice(0, 2) + '-' + value.slice(2);
+            }
+            
+            e.target.value = value;
+            
+            // Check immediately if full length reached
+            if (value.length === 10) {
+                if (value === correctCredential) {
+                    // Success
+                    credentialInput.classList.remove('border-pink-200', 'text-pink-600');
+                    credentialInput.classList.add('border-green-400', 'text-green-600', 'bg-green-50');
+                    errorMsg.style.opacity = '0';
+                    
+                    // Unlock animation
+                    setTimeout(() => {
+                        loginScreen.style.transition = "opacity 0.8s ease-out, transform 0.8s ease-out";
+                        loginScreen.style.opacity = "0";
+                        loginScreen.style.transform = "scale(1.1)";
+                        
+                        setTimeout(() => {
+                            loginScreen.style.display = "none";
+                            mainContent.classList.remove('hidden');
+                            // Animate main content appearance
+                            mainContent.classList.add('animate-fade-in-up'); // Ensure we have this animation or just let it appear
+                            
+                            // Try to play music automatically after interaction
+                            if (!isPlaying) {
+                                musicBtn.click();
+                            }
+                        }, 800);
+                    }, 300);
+                } else {
+                    // Error
+                    credentialInput.classList.add('animate-shake', 'border-red-400');
+                    errorMsg.style.opacity = '1';
+                    setTimeout(() => {
+                         credentialInput.classList.remove('animate-shake', 'border-red-400');
+                    }, 500);
+                }
+            } else {
+                // Reset styles while typing
+                 errorMsg.style.opacity = '0';
+                 credentialInput.classList.remove('border-red-400', 'border-green-400', 'text-green-600', 'bg-green-50');
+                 credentialInput.classList.add('border-pink-200', 'text-pink-600');
+            }
+        });
+
+        // Add shake animation to tailwind config or custom style if not present
+        // Since we are using CDN tailwind, we can inject a style for keyframes if needed,
+        // but 'animate-bounce' is standard. 'animate-shake' is not.
+        // Let's add a custom style for shake to the style block if possible, or just use CSS in JS.
+        // I'll append a style tag for the shake animation just in case.
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+            .animate-shake { animation: shake 0.3s ease-in-out; }
+        `;
+        document.head.appendChild(styleSheet);
     </script>
 </body>
 </html>
